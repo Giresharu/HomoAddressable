@@ -1,0 +1,20 @@
+{
+    "name": "com.GSR.HomoAddressable",
+    "version": "1.0.0",
+    "displayName": "HomoAddressable",
+    "description": "an Addressable auto-release solution",
+    "dependencies": {
+        "com.unity.addressables": "1.19.19",
+        "com.cysharp.unitask": "2.3.1"
+    },
+    "keywords": [
+        "Addressable",
+        "AssetBundle",
+        "GSR"
+    ],
+    "author": {
+        "name": "Giresharu",
+        "email": "gireshiyaru@gmail.com",
+        "url": "https://giresharu.github.io"
+    }
+}
