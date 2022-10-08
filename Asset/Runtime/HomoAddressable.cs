@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -18,7 +19,7 @@ namespace HomoAddressableTools {
 	public static class HomoAddressable {
 
 		public static T LoadAsset<T>(this IOnDestroyAssetLoad bindObj, string path) where T: Object {
-			// 第一次读取，初始化并让 Release 订阅它的销毁
+
 			if (bindObj.Handles == null) {
 				bindObj.Handles = new Dictionary<string, AsyncOperationHandle<Object>>();
 				bindObj.OnDestroyEvent += Release;
@@ -37,7 +38,7 @@ namespace HomoAddressableTools {
 		}
 
 		public static T LoadAsset<T>(this IOnDestroyAssetLoad bindObj, AssetReference reference) where T: Object {
-			// 第一次读取，初始化并让 Release 订阅它的销毁
+
 			if (bindObj.Handles == null) {
 				bindObj.Handles = new Dictionary<string, AsyncOperationHandle<Object>>();
 				bindObj.OnDestroyEvent += Release;
@@ -85,6 +86,7 @@ namespace HomoAddressableTools {
 		public static AsyncOperationHandle<T> LoadAssetHandle<T>(string path) {
 			return Addressables.LoadAssetAsync<T>(path);
 		}
+
 		public static AsyncOperationHandle<T> LoadAssetHandle<T>(AssetReference reference) {
 			return reference.LoadAssetAsync<T>();
 		}
@@ -97,7 +99,7 @@ namespace HomoAddressableTools {
 				token = (bindObj as MonoBehaviour).GetCancellationTokenOnDestroy();
 			}
 
-			if (token.IsCancellationRequested) throw new TaskCanceledException();
+			if (token.IsCancellationRequested) throw new OperationCanceledException();
 
 			if (bindObj.Handles == null) {
 				bindObj.Handles = new Dictionary<string, AsyncOperationHandle<Object>>();
@@ -116,23 +118,30 @@ namespace HomoAddressableTools {
 			return await handle.ToUniTask(progress, timing, token) as T;
 		}
 
-		public static GameObject Instantiate(string path) {
+		public static GameObject Instantiate(string path, Transform parent = null) {
 			var handle = Addressables.InstantiateAsync(path);
-			return handle.WaitForCompletion();
+			var gameObject = handle.WaitForCompletion();
+			if (parent != null)
+				gameObject.transform.SetParent(parent);
+			return gameObject;
+
 		}
-		public static GameObject Instantiate(AssetReference reference) {
+		public static GameObject Instantiate(AssetReference reference, Transform parent = null) {
 			var handle = reference.InstantiateAsync();
-			return handle.WaitForCompletion();
+			var gameObject = handle.WaitForCompletion();
+			if (parent != null)
+				gameObject.transform.SetParent(parent);
+			return gameObject;
 		}
 
 		public static async UniTask<GameObject> InstantiateAsync(string path, Transform parent = null, IProgress<float> progress = null,
 			PlayerLoopTiming timing = PlayerLoopTiming.Update, CancellationToken token = default) {
 
 			var handle = Addressables.InstantiateAsync(path);
-			var result = await handle.ToUniTask(progress, timing, token);
+			var gameObject = await handle.ToUniTask(progress, timing, token);
 			if (parent != null)
-				result.transform.SetParent(parent);
-			return result;
+				gameObject.transform.SetParent(parent);
+			return gameObject;
 		}
 		public static async UniTask<GameObject> InstantiateAsync(AssetReferenceGameObject reference, Transform parent = null, IProgress<float> progress = null,
 			PlayerLoopTiming timing = PlayerLoopTiming.Update, CancellationToken token = default) {
@@ -158,29 +167,76 @@ namespace HomoAddressableTools {
 			var handle = Addressables.LoadSceneAsync(path, mode, activeOnLoad);
 			return await handle.ToUniTask(progress, timing, token);
 		}
+
 		public static async UniTask<SceneInstance> LoadSceneAsync(AssetReference reference, LoadSceneMode mode = LoadSceneMode.Single, bool activeOnLoad = true, IProgress<float> progress = null,
 			PlayerLoopTiming timing = PlayerLoopTiming.Update, CancellationToken token = default) {
 			var handle = reference.LoadSceneAsync(mode, activeOnLoad);
 			return await handle.ToUniTask(progress, timing, token);
 		}
 
-		public static async UniTask<Sprite> LoadSingleSprite(this IOnDestroyAssetLoad obj, string path, int index = -1) {
+		public static async UniTask<Sprite> LoadSpriteAsync(this IOnDestroyAssetLoad bindObj, string path, int index = -1, IProgress<float> progress = null,
+			PlayerLoopTiming timing = PlayerLoopTiming.Update, CancellationToken token = default) {
+
+			if (token.IsCancellationRequested) throw new OperationCanceledException();
+
 			Regex regex = new Regex(@"[^/]*(?=\.[^/]*$)", RegexOptions.ExplicitCapture);
 			string spriteName = regex.Match(path).Value;
 			StringBuilder s = new StringBuilder();
 			s.Append(path).Append("[").Append(spriteName);
 			if (index != -1) s.Append($"_{index}");
 			s.Append("]");
-			return await obj.LoadAssetAsync<Sprite>(s.ToString());
-		}
-		
-		public static async UniTask<Sprite> LoadSingleSprite(this IOnDestroyAssetLoad obj, string path, string spriteName) {
-			StringBuilder s = new StringBuilder();
-			s.Append(path).Append("[").Append(spriteName).Append("]");
-			return await obj.LoadAssetAsync<Sprite>(s.ToString());
+			return await bindObj.LoadAssetAsync<Sprite>(s.ToString(), progress, timing, token);
 		}
 
-		public static async UniTask<Sprite[]> LoadSprites(this IOnDestroyAssetLoad obj, string path, int count = 1) {
+		public static Sprite LoadSprite(this IOnDestroyAssetLoad bindObj, string path, int index = -1) {
+			Regex regex = new Regex(@"[^/]*(?=\.[^/]*$)", RegexOptions.ExplicitCapture);
+			string spriteName = regex.Match(path).Value;
+			StringBuilder s = new StringBuilder();
+			s.Append(path).Append("[").Append(spriteName);
+			if (index != -1) s.Append($"_{index}");
+			s.Append("]");
+			return bindObj.LoadAsset<Sprite>(s.ToString());
+		}
+
+		public static async UniTask<Sprite> LoadSpriteAsync(this IOnDestroyAssetLoad bindObj, string path, string spriteName, IProgress<float> progress = null,
+			PlayerLoopTiming timing = PlayerLoopTiming.Update, CancellationToken token = default) {
+
+			if (token.IsCancellationRequested) throw new OperationCanceledException();
+
+			StringBuilder s = new StringBuilder();
+			s.Append(path).Append("[").Append(spriteName).Append("]");
+			return await bindObj.LoadAssetAsync<Sprite>(s.ToString(), progress, timing, token);
+		}
+
+		public static Sprite LoadSprite(this IOnDestroyAssetLoad bindObj, string path, string spriteName) {
+			StringBuilder s = new StringBuilder();
+			s.Append(path).Append("[").Append(spriteName).Append("]");
+			return bindObj.LoadAsset<Sprite>(s.ToString());
+		}
+
+		public static async UniTask<Sprite[]> LoadSpritesAsync(this IOnDestroyAssetLoad bindObj, string path, int count = 1, IProgress<float> progress = null,
+			PlayerLoopTiming timing = PlayerLoopTiming.Update, CancellationToken token = default) {
+
+			if (token.IsCancellationRequested) throw new OperationCanceledException();
+
+			List<Sprite> sprites = new List<Sprite>();
+			int index = 0;
+			Regex regex = new Regex(@"[^/]*(?=\.[^/]*$)", RegexOptions.ExplicitCapture);
+			string spriteName = regex.Match(path).Value;
+			float[] percents = new float[count];
+			while (index < count) {
+				float percent = percents.Sum() / count;
+				progress?.Report(percent);
+				StringBuilder s = new StringBuilder();
+				s.Append(path).Append("[").Append(spriteName).Append($"_{index}").Append("]");
+				sprites.Add(await bindObj.LoadAssetAsync<Sprite>(s.ToString(), null, timing, token));
+				percents[index] = 1;
+				index++;
+			}
+			progress?.Report(percents.Sum() / count);
+			return sprites.ToArray();
+		}
+		public static Sprite[] LoadSprites(this IOnDestroyAssetLoad bindObj, string path, int count = 1) {
 			List<Sprite> sprites = new List<Sprite>();
 			int index = 0;
 			Regex regex = new Regex(@"[^/]*(?=\.[^/]*$)", RegexOptions.ExplicitCapture);
@@ -188,7 +244,7 @@ namespace HomoAddressableTools {
 			while (index < count) {
 				StringBuilder s = new StringBuilder();
 				s.Append(path).Append("[").Append(spriteName).Append($"_{index}").Append("]");
-				sprites.Add(await obj.LoadAssetAsync<Sprite>(s.ToString()));
+				sprites.Add(bindObj.LoadAsset<Sprite>(s.ToString()));
 				index++;
 			}
 			return sprites.ToArray();

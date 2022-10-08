@@ -9,9 +9,6 @@ namespace HomoAddressableTools {
 	}
 
 	public interface IOnDestroyAssetLoad: IOnDestroy {
-
-		List<string> Keys { get; set; }
-		
 		Dictionary<string,AsyncOperationHandle<Object>> Handles { get; set; }
 	}
 }
