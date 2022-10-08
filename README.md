@@ -8,13 +8,6 @@ HomoAddressable
 
 安装
 ---
-### 通过 UPM 安装
-
-如果你安装了 OpenUPM ，你可以在项目根目录通过以下命令安装：
-```
-openupm add com.gsr.homo_addressable
-```
-
 ### 通过 git URL 安装
 
 你也可以通过在 Unity 引擎中，打开 `Package Manager` ，点击左上角的 `+` ，选择 `Add package from git URL` ，然后输入本项目的 git 地址即可： 
