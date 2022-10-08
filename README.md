@@ -11,7 +11,8 @@ HomoAddressable
 ### 通过 git URL 安装
 
 你也可以通过在 Unity 引擎中，打开 `Package Manager` ，点击左上角的 `+` ，选择 `Add package from git URL` ，然后输入本项目的 git 地址即可： 
-`https://github.com/Giresharu/HomoAddressable.git` 。
+`https://github.com/Giresharu/HomoAddressable.git?path=Assets` 。
+
 
 或者在项目的 `Packages/manifest.json` 中添加 `"com.gsr.homo_addressable": "https://github.com/Giresharu/HomoAddressable.git"` 。
 
