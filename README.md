@@ -13,9 +13,6 @@ HomoAddressable
 你也可以通过在 Unity 引擎中，打开 `Package Manager` ，点击左上角的 `+` ，选择 `Add package from git URL` ，然后输入本项目的 git 地址即可： 
 `https://github.com/Giresharu/HomoAddressable.git?path=Assets` 。
 
-
-或者在项目的 `Packages/manifest.json` 中添加 `"com.gsr.homo_addressable": "https://github.com/Giresharu/HomoAddressable.git"` 。
-
 依赖
 ---
 本工具依赖于 [com.unity.addressable](https://docs.unity3d.com/Packages/com.unity.addressables@1.19/manual/AddressableAssetsGettingStarted.html) 与 [com.cysharp.unitask](https://github.com/Cysharp/UniTask) 运行，请确保项目以安装这两个插件。
