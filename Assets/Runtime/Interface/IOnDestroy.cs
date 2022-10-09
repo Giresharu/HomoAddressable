@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace HomoAddressableTools {
@@ -9,6 +7,7 @@ namespace HomoAddressableTools {
 	}
 
 	public interface IOnDestroyAssetLoad: IOnDestroy {
-		Dictionary<string,AsyncOperationHandle<Object>> Handles { get; set; }
+		Dictionary<string,AsyncOperationHandle> Handles { get; set; }
 	}
+	
 }
