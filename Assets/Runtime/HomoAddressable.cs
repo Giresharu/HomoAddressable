@@ -165,7 +165,7 @@ namespace HomoAddressableTools {
 		/// <param name="parent">实例化在场景中的父节点</param>
 		/// <returns></returns>
 		public static GameObject Instantiate(string path, Transform parent = null) {
-			var handle = Addressables.InstantiateAsync(path,parent);
+			var handle = Addressables.InstantiateAsync(path, parent);
 			var gameObject = handle.WaitForCompletion();
 			return gameObject;
 
@@ -195,7 +195,7 @@ namespace HomoAddressableTools {
 		public static async UniTask<GameObject> InstantiateAsync(string path, Transform parent = null, IProgress<float> progress = null,
 			PlayerLoopTiming timing = PlayerLoopTiming.Update, CancellationToken token = default) {
 
-			var handle = Addressables.InstantiateAsync(path,parent);
+			var handle = Addressables.InstantiateAsync(path, parent);
 			var gameObject = await handle.ToUniTask(progress, timing, token);
 			return gameObject;
 		}
@@ -292,13 +292,15 @@ namespace HomoAddressableTools {
 			Addressables.ReleaseInstance(obj);
 			Object.Destroy(obj);
 		}
-		
+
 		/// <summary>
 		/// 释放从 Addressable 读取的场景资源及其依赖资源的引用计数，并卸载之。
 		/// </summary>
-		/// <param name="sceneInstance"></param>
-		public static async UniTaskVoid ReleaseScene(this SceneInstance sceneInstance) {
-			await Addressables.UnloadSceneAsync(sceneInstance);
+		/// <param name="sceneInstance">要卸载的场景实例</param>
+		/// <param name="progress">卸载的进度</param>
+		/// <param name="timing">执行异步的时间点</param>
+		public static async UniTaskVoid ReleaseScene(this SceneInstance sceneInstance, IProgress<float> progress = null, PlayerLoopTiming timing = PlayerLoopTiming.Update) {
+			await Addressables.UnloadSceneAsync(sceneInstance).ToUniTask(progress, timing);
 		}
 
 	}
