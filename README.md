@@ -15,7 +15,11 @@ https://github.com/Giresharu/HomoAddressable.git?path=Assets 。
 
 依赖
 ---
-本工具依赖于 [com.unity.addressable](https://docs.unity3d.com/Packages/com.unity.addressables@1.19/manual/AddressableAssetsGettingStarted.html) 与 [com.cysharp.unitask](https://github.com/Cysharp/UniTask) 运行，请确保项目以安装这两个插件。
+本工具依赖于 [com.unity.addressable](https://docs.unity3d.com/Packages/com.unity.addressables@1.19/manual/AddressableAssetsGettingStarted.html) 与 [com.cysharp.unitask](https://github.com/Cysharp/UniTask) 运行，请确保项目已安装这两个插件。
+
+HomoAddressableTools 命名空间
+---
+本插件所提供的所有类与接口都位于 HomoAddressableTools 命名空间下，请注意。
 
 HomoBehaviour 类与 IOnDestroyAssetLoad 接口
 ---
@@ -113,7 +117,7 @@ T LoadAsset<T>(this IOnDestroyAssetLoad bindObj, AssetReference reference)
 
 大多异步加载函数都大同小异有同步的版本，不多赘述，可以自己 F12 观看。
 
-LoadAssetHandle<T>
+HomoAddressable.LoadAssetHandle<T>
 ---
 
 我们还提供了原本的 Addressable.LoadAssetAsync<T> 的封装，原汁原味，供希望读取资源的静态函数看起来整整齐齐的强迫症使用。
