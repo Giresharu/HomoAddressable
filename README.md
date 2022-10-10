@@ -7,6 +7,28 @@ HomoAddressable
 * 自动管理 LoadAsset 所生成的 AsyncOperationHandle ，在读取资源的 GameObject 实例销毁时自动释放；
 * 使用 Unitask 作为异步的方式，让读取资源后的回调更加简单；
 
+## 目录
+
+- [依赖](#依赖)
+- [安装](#安装)
+  - [通过 OpenUPM 安装](#通过-openupm-安装)
+  - [通过 git URL 安装](#通过-git-url-安装)
+  - [通过 unitypackage 文件安装](#通过-unitypackage-文件安装)
+- [HomoAddressableTools 命名空间](#homoaddressabletools-命名空间)
+- [HomoBehaviour 类与 IOnDestroyAssetLoad 接口](#homobehaviour-类与-iondestroyassetload-接口)
+  - [HomoBehaviour](#homobehaviour)
+  - [IOnDestroyAssetLoad](#iondestroyassetload)
+  - [关于非 MonoBehaviour 类](#关于非-monobehaviour-类)
+- [HomoAddressable.LoadAssetAsync](#homoaddressableloadassetasync)
+- [HomoAddressable.LoadAsset](#homoaddressableloadasset)
+- [HomoAddressable.LoadAssetHandle](#homoaddressableloadassethandle)
+- [HomoAddressable.InstantiateAsync](#homoaddressableinstantiateasync)
+- [HomoAddressable.LoadSceneAsync](#homoaddressableloadsceneasync)
+
+
+依赖
+---
+本工具依赖于 [com.unity.addressable](https://docs.unity3d.com/Packages/com.unity.addressables@1.19/manual/AddressableAssetsGettingStarted.html) 与 [com.cysharp.unitask](https://github.com/Cysharp/UniTask) 运行，请确保项目已安装这两个插件。
 
 安装
 ---
@@ -22,13 +44,9 @@ openupm add com.gsr.homo_addressable
 你也可以通过在 Unity 引擎中，打开 `Package Manager` ，点击左上角的 `+` ，选择 `Add package from git URL` ，然后输入本项目的 git 地址即可： 
 `https://github.com/Giresharu/HomoAddressable.git?path=Assets` 。
 
-### 通过 unitypackage 文件安装 （不推荐）
+### 通过 unitypackage 文件安装
 
 通过 [Releases](https://github.com/Giresharu/HomoAddressable/releases) 页面下载 unitypackage 文件并安装。此安装方法会造成项目资源目录不整洁，故不推荐。
-
-依赖
----
-本工具依赖于 [com.unity.addressable](https://docs.unity3d.com/Packages/com.unity.addressables@1.19/manual/AddressableAssetsGettingStarted.html) 与 [com.cysharp.unitask](https://github.com/Cysharp/UniTask) 运行，请确保项目已安装这两个插件。
 
 HomoAddressableTools 命名空间
 ---
