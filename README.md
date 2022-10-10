@@ -1,6 +1,7 @@
 HomoAddressable
 ===
 [![Releases](https://img.shields.io/github/release/Giresharu/HomoAddressable.svg)](https://github.com/Giresharu/HomoAddressable/releases)
+
 一个更人性化的 Addressable 资源读取解决方案。人的学名前缀便是 Homo ，本着以人为本的思想创建了这个工具，所以给它起名叫做 HomoAddressable。（大嘘）
 
 * 自动管理 LoadAsset 所生成的 AsyncOperationHandle ，在读取资源的 GameObject 实例销毁时自动释放；
