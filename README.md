@@ -24,6 +24,7 @@ HomoAddressable
 - [HomoAddressable.LoadAssetHandle](#homoaddressableloadassethandle)
 - [HomoAddressable.InstantiateAsync](#homoaddressableinstantiateasync)
 - [HomoAddressable.LoadSceneAsync](#homoaddressableloadsceneasync)
+- [许可证](#许可证)
 
 
 依赖
@@ -202,5 +203,8 @@ async UniTaskVoid ReleaseScene(this SceneInstance sceneInstance, IProgress<float
 
 该函数是异步的，但不提供取消信号。开弓没有回头箭，卸载了就别想整回来。
 
+许可证
+---
 
+本项目使用 MIT 协议
 
