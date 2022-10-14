@@ -1,6 +1,6 @@
 {
     "name": "com.gsr.homo_addressable",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "displayName": "HomoAddressable",
     "description": "an Addressable auto-release solution",
     "dependencies": {
@@ -8,13 +8,19 @@
         "com.cysharp.unitask": "2.3.1"
     },
     "keywords": [
-        "Addressable",
+        "Addressables",
         "AssetBundle",
-        "GSR"
+        "GSR",
+        "Homo",
+        "HomoAddressable"
     ],
     "author": {
         "name": "Giresharu",
         "email": "gireshiyaru@gmail.com",
         "url": "https://giresharu.github.io"
-    }
+    },
+    "changelogUrl": "https://github.com/Giresharu/HomoAddressable/blob/master/CHANGELOG.md",
+    "documentationUrl": "https://github.com/Giresharu/HomoAddressable/blob/master/README.md",
+    "license": "MIT",
+    "licensesUrl": "https://github.com/Giresharu/HomoAddressable/blob/master/LICENSE.md"
 }
